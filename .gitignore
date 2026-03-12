@@ -1,0 +1,13 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+
+# Test/cache artifacts
+.pytest_cache/
+
+# Local database
+*.db
+instance/

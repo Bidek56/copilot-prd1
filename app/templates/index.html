@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Tasks | Flask To-Do{% endblock %}
+
+{% block content %}
+  <section class="toolbar">
+    <h2>My Tasks</h2>
+    <a class="btn" href="{{ url_for('main.new_task') }}">Add Task</a>
+  </section>
+
+  {% if tasks %}
+    <ul class="task-list">
+      {% for task in tasks %}
+        <li class="task-item {% if task.is_completed %}task-completed{% endif %}">
+          <div class="task-main">
+            <h3>{{ task.title }}</h3>
+            {% if task.description %}
+              <p>{{ task.description }}</p>
+            {% endif %}
+            <small>Created: {{ task.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+          </div>
+
+          <div class="task-actions">
+            <form method="post" action="{{ url_for('main.toggle_task', task_id=task.id) }}">
+              {{ action_form.hidden_tag() }}
+              <button class="btn btn-secondary" type="submit">
+                {% if task.is_completed %}Mark Incomplete{% else %}Mark Complete{% endif %}
+              </button>
+            </form>
+
+            <a class="btn btn-secondary" href="{{ url_for('main.edit_task', task_id=task.id) }}">Edit</a>
+
+            <form method="post" action="{{ url_for('main.delete_task', task_id=task.id) }}">
+              {{ action_form.hidden_tag() }}
+              <button class="btn btn-danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No tasks yet. Create your first task.</p>
+  {% endif %}
+{% endblock %}
